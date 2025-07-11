@@ -1,16 +1,19 @@
-import africastalking from "africastalking";
-
-const africasTalking = africastalking({
-  apiKey: process.env.AFRICASTALKING_API_KEY!,
-  username: process.env.AFRICASTALKING_USERNAME!,
-});
-
-const sms = africasTalking.SMS;
+import axios from "axios";
 
 export async function sendSMS(to: string, message: string) {
-  return sms.send({
-    to: [to],
-    message,
-    from: process.env.AFRICASTALKING_SENDER_ID,
-  });
+  const apiKey = process.env.ARKASEL_API_KEY!;
+
+  await axios.post(
+    "https://sms.arkasel.com/api/v1/send",
+    {
+      to,
+      message,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+    }
+  );
 }
